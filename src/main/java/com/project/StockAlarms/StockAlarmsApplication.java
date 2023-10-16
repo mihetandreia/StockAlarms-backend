@@ -8,7 +8,10 @@ public class StockAlarmsApplication {
 	
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(StockAlarmsApplication.class, args);
+
 	}
+
 
 }
