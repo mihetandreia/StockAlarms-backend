@@ -1,39 +1,28 @@
-package com.project.StockAlarms.model;
+package com.project.StockAlarms.dto;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 
-@Entity
-public class User {
-
-    @Id
-    @GeneratedValue
+public class UserDTO {
     private Long id;
 
-    @Column(nullable=false)
     private String firstName;
 
-    @Column(nullable=false)
     private String lastName;
 
-    @Column(nullable=false, unique=true)
     private String email;
 
-    @Column(nullable=false)
     private String password;
 
-    public User(String firstName, String lastName, String email, String password) {
-        // this.id = id
+    public UserDTO(){
+
+    }
+
+    public UserDTO(Long id, String firstName, String lastName, String email, String password) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-    }
-
-    public User() {
-
     }
 
     public Long getId() {
@@ -74,16 +63,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                id +
-                " " +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 }
