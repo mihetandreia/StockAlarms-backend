@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserContoller {
 
     @Autowired
@@ -21,6 +21,7 @@ public class UserContoller {
     }
     @GetMapping("/users")
     List<User> getAllUsers(){
+        System.out.println(userRepository.findAll());
         return userRepository.findAll();
     }
 
@@ -36,6 +37,6 @@ public class UserContoller {
             throw new UserNotFoundException(id);
         }
         userRepository.deleteById(id);
-        return  "User with id "+id+" has been deleted success.";
+        return  "User with id "+ id +" has been deleted successfully.";
     }
 }

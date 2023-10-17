@@ -11,6 +11,7 @@ public class StockAlarmsApplication {
 
 		SpringApplication.run(StockAlarmsApplication.class, args);
 
+
 	}
 
 
