@@ -13,6 +13,8 @@ public interface UserService {
 
     LoginMessage loginUser(LoginDTO loginDTO);
 
+    Long getIdUserByEmail(String email);
+
     List<User> findAll();
 
     Optional<User> findById(Long id);

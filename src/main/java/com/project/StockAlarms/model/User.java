@@ -28,8 +28,8 @@ public class User {
     private List<Alarm> alarms = new ArrayList<>();
 
 
-    public User(String firstName, String lastName, String email, String password) {
-        // this.id = id
+    public User( String firstName, String lastName, String email, String password) {
+         //this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

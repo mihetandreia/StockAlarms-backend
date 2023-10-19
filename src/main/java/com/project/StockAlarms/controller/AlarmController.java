@@ -9,29 +9,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/alarms")
 @CrossOrigin(origins = "http://localhost:3000")
 public class AlarmController {
 
     @Autowired
     private AlarmService alarmService;
 
-    @PostMapping("/alarm")
+    @PostMapping("/add")
     public String addAlarm(@RequestBody AlarmDTO alarmDTO) {
         String result = alarmService.addAlarm(alarmDTO);
         return result;
     }
 
-    @GetMapping("/alarms")
+    @GetMapping("/getAll")
     List<Alarm> getAllAlarms() {
         return alarmService.findAll();
     }
 
-    @GetMapping("/alarms/{userId}")
+    @GetMapping("/getAllByUserId/{userId}")
     List<Alarm> getAllAlarmsByUserId(@PathVariable Long userId) {
         return alarmService.findAllByUserId(userId);
     }
 
-    @DeleteMapping("/alarm/{id}")
+    @DeleteMapping("/deleteById/{id}")
     String deleteAlarm(@PathVariable long id) {
         alarmService.deleteById(id);
         return "Alarm with " + id + " has been deleted successfully.";

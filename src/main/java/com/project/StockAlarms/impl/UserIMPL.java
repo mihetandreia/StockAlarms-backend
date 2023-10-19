@@ -5,6 +5,7 @@ import com.project.StockAlarms.dto.UserDTO;
 import com.project.StockAlarms.model.User;
 import com.project.StockAlarms.repository.UserRepository;
 import com.project.StockAlarms.response.LoginMessage;
+import com.project.StockAlarms.service.AuthenticationService;
 import com.project.StockAlarms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,6 @@ public class UserIMPL implements UserService {
 
     @Autowired
     private UserRepository userRepository;
-
 
 
     @Override
@@ -35,18 +35,24 @@ public class UserIMPL implements UserService {
     }
     UserDTO userDTO;
 
+    @Override
     public LoginMessage loginUser(LoginDTO loginDTO) {
         User user = userRepository.findByEmail(loginDTO.getEmail());
         if (user != null) {
+
                 Optional<User> user1 = userRepository.findOneByEmailAndPassword(loginDTO.getEmail(), loginDTO.getPassword());
                 if (user1.isPresent()) {
                     return new LoginMessage("Login Successfully", true);
                 } else {
                     return new LoginMessage("Login Failed", false);
                 }
-        }else {
-            return new LoginMessage("Email not exits", false);
+        } else {
+                return new LoginMessage("Email not exits", false);
         }
+    }
+
+    public Long getIdUserByEmail(String email) {
+        return userRepository.findByEmail(email).getId();
     }
 
     public List<User> findAll() {
