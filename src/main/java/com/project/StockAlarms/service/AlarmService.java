@@ -16,5 +16,8 @@ public interface AlarmService {
 
     void deleteById(Long id);
 
+
     List<Alarm> findAllByUserId(Long userId);
+
+    String updateAlarm(Long id, AlarmDTO alarmDTO);
 }

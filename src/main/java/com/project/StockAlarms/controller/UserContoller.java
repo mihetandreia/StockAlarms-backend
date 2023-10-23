@@ -41,6 +41,7 @@ public class UserContoller {
         if (loginMessage.getMessage() == "Login Successfully") {
             Long idUser = userService.getIdUserByEmail(loginDTO.getEmail());
             this.userSessionId = authenticationService.authenticateUser(loginDTO.getEmail(), idUser);
+            System.out.println("Login " + this.userSessionId);
         }
         return ResponseEntity.ok(loginMessage);
     }
@@ -49,6 +50,8 @@ public class UserContoller {
     public Optional<User> whoAmI() {
         UserSession userSession = authenticationService.getUserSessionBySessionId(this.userSessionId);
         Optional<User> user = userService.findById(userSession.getUserId());
+        System.out.println("whoAmI " + this.userSessionId + " " + userSession.getEmail() + " " + user);
+
         return user;
     }
 

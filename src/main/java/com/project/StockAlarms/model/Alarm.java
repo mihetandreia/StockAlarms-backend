@@ -16,26 +16,64 @@ public class Alarm {
     private User user;
 
     @Column(nullable=false)
-    private String stock; // inca nu stiu cum sa pun stock-ul
+    private String stock; // symbol stock
+
+    @Column(nullable = false)
+    private Double priceWhenAlarmWasDefined;
+
+    @Column(nullable = false)
+    private Double currentPrice;
+
+    @Column(nullable = false)
+    private Double changePercent;
+
 
     @Column(nullable=false)
-    private BigDecimal upperTarget;
+    private Double upperTarget;
 
     @Column(nullable=false)
-    private BigDecimal lowerTarget;
+    private Double lowerTarget;
 
     @Column(nullable=false)
     private boolean status;
 
-    public Alarm() {
-    }
-
-    public Alarm(User user, String stock, BigDecimal upperTarget, BigDecimal lowerTarget, boolean status) {
+    public Alarm(User user, String stock, Double priceWhenAlarmWasDefined, Double currentPrice, Double changePercent,
+                 Double upperTarget, Double lowerTarget, boolean status) {
         this.user = user;
         this.stock = stock;
+        this.priceWhenAlarmWasDefined = priceWhenAlarmWasDefined;
+        this.currentPrice = currentPrice;
+        this.changePercent = changePercent;
         this.upperTarget = upperTarget;
         this.lowerTarget = lowerTarget;
         this.status = status;
+    }
+
+    public Alarm() {
+    }
+
+    public Double getPriceWhenAlarmWasDefined() {
+        return priceWhenAlarmWasDefined;
+    }
+
+    public void setPriceWhenAlarmWasDefined(Double priceWhenAlarmWasDefined) {
+        this.priceWhenAlarmWasDefined = priceWhenAlarmWasDefined;
+    }
+
+    public Double getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(Double currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
+    public Double getChangePercent() {
+        return changePercent;
+    }
+
+    public void setChangePercent(Double changePercent) {
+        this.changePercent = changePercent;
     }
 
     public Long getId() {
@@ -62,19 +100,19 @@ public class Alarm {
         this.stock = stock;
     }
 
-    public BigDecimal getUpperTarget() {
+    public Double getUpperTarget() {
         return upperTarget;
     }
 
-    public void setUpperTarget(BigDecimal upperTarget) {
+    public void setUpperTarget(Double upperTarget) {
         this.upperTarget = upperTarget;
     }
 
-    public BigDecimal getLowerTarget() {
+    public Double getLowerTarget() {
         return lowerTarget;
     }
 
-    public void setLowerTarget(BigDecimal lowerTarget) {
+    public void setLowerTarget(Double lowerTarget) {
         this.lowerTarget = lowerTarget;
     }
 
@@ -90,8 +128,11 @@ public class Alarm {
     public String toString() {
         return "Alarm{" +
                 "id=" + id +
-                ", user=" + user.getEmail() +
+                ", user=" + user +
                 ", stock='" + stock + '\'' +
+                ", priceWhenAlarmWasDefined=" + priceWhenAlarmWasDefined +
+                ", currentPrice=" + currentPrice +
+                ", changePercent=" + changePercent +
                 ", upperTarget=" + upperTarget +
                 ", lowerTarget=" + lowerTarget +
                 ", status=" + status +

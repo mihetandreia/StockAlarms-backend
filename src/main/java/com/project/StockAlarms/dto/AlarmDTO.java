@@ -16,10 +16,10 @@ public class AlarmDTO {
     private String stock; // inca nu stiu cum sa pun stock-ul
 
 
-    private BigDecimal upperTarget;
+    private Double upperTarget;
 
 
-    private BigDecimal lowerTarget;
+    private Double lowerTarget;
 
 
     private boolean status;
@@ -27,7 +27,7 @@ public class AlarmDTO {
     public AlarmDTO() {
     }
 
-    public AlarmDTO(Long id, User user, String stock, BigDecimal upperTarget, BigDecimal lowerTarget, boolean status) {
+    public AlarmDTO(Long id, User user, String stock, Double upperTarget, Double lowerTarget, boolean status) {
         this.id = id;
         this.user = user;
         this.stock = stock;
@@ -60,19 +60,19 @@ public class AlarmDTO {
         this.stock = stock;
     }
 
-    public BigDecimal getUpperTarget() {
+    public Double getUpperTarget() {
         return upperTarget;
     }
 
-    public void setUpperTarget(BigDecimal upperTarget) {
+    public void setUpperTarget(Double upperTarget) {
         this.upperTarget = upperTarget;
     }
 
-    public BigDecimal getLowerTarget() {
+    public Double getLowerTarget() {
         return lowerTarget;
     }
 
-    public void setLowerTarget(BigDecimal lowerTarget) {
+    public void setLowerTarget(Double lowerTarget) {
         this.lowerTarget = lowerTarget;
     }
 
