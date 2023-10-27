@@ -9,18 +9,22 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 public class StockAlarmsApplication {
-	
+
 
 	public static void main(String[] args) {
 
-        Config cfg = Config.builder()
-                .key("WJI6O19AH0RVBBGU")
+
+       	Config cfg = Config.builder()
+                .key("ESC2KL5U5A1X3IT6") //WJI6O19AH0RVBBGU
                 .timeOut(10)
                 .build();
 
         AlphaVantage.api().init(cfg);
 
 		SpringApplication.run(StockAlarmsApplication.class, args);
+
+
+
 
 		// Welcome to Alpha Vantage!
 		// Your API key is: WJI6O19AH0RVBBGU.

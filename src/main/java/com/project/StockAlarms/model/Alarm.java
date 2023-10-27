@@ -116,7 +116,7 @@ public class Alarm {
         this.lowerTarget = lowerTarget;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 

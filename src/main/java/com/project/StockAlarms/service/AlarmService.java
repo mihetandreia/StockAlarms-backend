@@ -19,5 +19,10 @@ public interface AlarmService {
 
     List<Alarm> findAllByUserId(Long userId);
 
+    List<String> findAllStockFromActiveAlarms();
+
+    void deleteFromStockToRefresh(Long id);
+
     String updateAlarm(Long id, AlarmDTO alarmDTO);
+
 }

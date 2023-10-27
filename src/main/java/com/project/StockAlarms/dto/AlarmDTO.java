@@ -13,7 +13,7 @@ public class AlarmDTO {
     private User user;
 
 
-    private String stock; // inca nu stiu cum sa pun stock-ul
+    private String stock;
 
 
     private Double upperTarget;

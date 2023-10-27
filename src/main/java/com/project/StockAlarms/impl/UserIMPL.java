@@ -33,7 +33,6 @@ public class UserIMPL implements UserService {
 
         return newUser.getEmail();
     }
-    UserDTO userDTO;
 
     @Override
     public LoginMessage loginUser(LoginDTO loginDTO) {

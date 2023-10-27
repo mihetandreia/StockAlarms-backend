@@ -1,9 +1,12 @@
 package com.project.StockAlarms.controller;
 
 import com.project.StockAlarms.dto.AlarmDTO;
+import com.project.StockAlarms.exception.AlarmException;
 import com.project.StockAlarms.model.Alarm;
 import com.project.StockAlarms.service.AlarmService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +21,14 @@ public class AlarmController {
     private AlarmService alarmService;
 
     @PostMapping("/add")
-    public String addAlarm(@RequestBody AlarmDTO alarmDTO) {
-        String result = alarmService.addAlarm(alarmDTO);
-        return result;
+    public ResponseEntity<String> addAlarm(@RequestBody AlarmDTO alarmDTO) {
+        try {
+            String result = alarmService.addAlarm(alarmDTO);
+            return ResponseEntity.ok(result);
+        } catch (AlarmException e) {
+            String errorMessage = e.getMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        }
     }
 
     @GetMapping("/getAll")

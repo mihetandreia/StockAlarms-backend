@@ -2,6 +2,9 @@ package com.project.StockAlarms.service;
 
 import com.crazzyghost.alphavantage.AlphaVantage;
 import com.crazzyghost.alphavantage.Config;
+import com.crazzyghost.alphavantage.parameters.DataType;
+import com.crazzyghost.alphavantage.timeseries.response.QuoteResponse;
+import com.crazzyghost.alphavantage.timeseries.response.TimeSeriesResponse;
 import com.project.StockAlarms.model.StockWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @SpringBootTest
-@EnableScheduling
+
 class StockServiceTest {
 
 
@@ -25,17 +28,29 @@ class StockServiceTest {
 
     @Test
     void invoke() throws IOException {
-        Config cfg = Config.builder()
-                .key("WJI6O19AH0RVBBGU")
-                .timeOut(15)
+  /*      Config cfg = Config.builder()
+                .key("ESC2KL5U5A1X3IT6") // ESC2KL5U5A1X3IT6    WJI6O19AH0RVBBGU
+                .timeOut(10)
                 .build();
 
         AlphaVantage.api().init(cfg);
-       /* final TimeSeriesResponse stock = stockService.findStock("AAPL");
-        System.out.println("TEST: " + stock.getMetaData().getLastRefreshed());
-        System.out.println("TEST: " +stock);
 
+        QuoteResponse response = AlphaVantage.api()
+                .timeSeries()
+                .quote()
+                .forSymbol("AAPL")
+                .dataType(DataType.JSON)
+                .fetchSync();
+        System.out.println(response.toString());
+       System.out.println("response "+response.getSymbol() + " " + response.getPrice());
+        //StockWrapper stock = new StockWrapper(response);
+        //System.out.println(stock.getStock().getSymbol());*/
 
+       final StockWrapper stock = stockService.findStock("IBM");
+        System.out.println("TEST: " + stock.getStock().getSymbol() + stock.getStock().getPrice());
+        System.out.println("TEST: " + stock);
+
+/*
    StockWrapper stock1 = stockService2.findStock("AAPL");
         System.out.println("TEST: " +stock1.getLastAccessed());
     final Double price = stockService2.findPrice(stock1);
@@ -48,12 +63,12 @@ class StockServiceTest {
         final Double price2 = stockService2.findPrice(stock1);
         System.out.println("TEST pret2: " + price2);
 
-        */
 
-        final StockWrapper stock = stockService.findStock("AAPL");
+
+        final StockWrapper stock = stockService.findStock("IBM");
         System.out.println("TEST: " + stock.getStock().getLatestTradingDay());
         System.out.println("TEST: " +stock.getStock().getSymbol() + " " + stock.getStock().getPrice() + " " + stock.getStock().getChangePercent());
-/*
+
         List<String> stocks = new ArrayList<>();
         stocks.add("IBM");
         stocks.add("AAPL");
@@ -66,7 +81,6 @@ class StockServiceTest {
 
         });
         System.out.println(stock.getStock().getSymbol());
-*/
         StockWrapper stock1 = stockService.findStock("AAPL");
         System.out.println("TEST: " +stock1.getLastAccessed());
         final Double price = stockService.findPrice(stock1);
@@ -77,7 +91,7 @@ class StockServiceTest {
             Thread.currentThread().interrupt(); // În cazul în care firul este întrerupt
         }
         final Double price2 = stockService.findPrice(stock1);
-        System.out.println("TEST pret2: " + price2);
+        System.out.println("TEST pret2: " + price2);*/
     }
 }
 

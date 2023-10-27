@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Service
 public class UserSessionService {
-    private Map<String, UserSession> userSessions = new HashMap<>();
+    private final Map<String, UserSession> userSessions = new HashMap<>();
 
     public void addUserSession(String sessionId, UserSession userSession) {
         userSessions.put(sessionId, userSession);
