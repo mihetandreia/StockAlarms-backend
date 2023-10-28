@@ -25,6 +25,9 @@ public class RefreshService {
     @Autowired
     private AlarmRepository alarmRepository;
 
+    @Autowired
+    private MailSenderService mailSenderService;
+
     @Value("${polling.interval}")
     private Duration pollingInterval;
 
@@ -36,6 +39,7 @@ public class RefreshService {
     public void addStockToRefresh(StockWrapper stock) {
         if (!existsInStockToRefresh(stock)) {
             stocksToRefresh.put(stock, false);
+            System.out.println("Stock-ul " + stock.getStock().getSymbol() + " a fost adaugat în stocksToRefresh.");
         } else {
             System.out.println("Stock-ul " + stock.getStock().getSymbol() + " există deja în stocksToRefresh.");
         }
@@ -62,7 +66,9 @@ public class RefreshService {
 
     public boolean existsInStockToRefresh(StockWrapper stock) {
         String symbol = stock.getStock().getSymbol();
+        System.out.println("SYMBOL1" + symbol);
         for (StockWrapper existingStock : stocksToRefresh.keySet()) {
+            System.out.println("SYMBOL2" + existingStock.getStock().getSymbol());
             if (existingStock.getStock().getSymbol().equals(symbol)) {
                 return true;
             }
@@ -108,9 +114,30 @@ public class RefreshService {
         List<Alarm> alarms = alarmRepository.findAllByStock(symbol);
         System.out.println(alarms);
         for (Alarm alarm : alarms) {
-            alarm.setCurrentPrice(currentPrice);
-            alarm.setChangePercent(variance);
-            alarmRepository.save(alarm);
+            if (alarm.getStatus()) {
+                alarm.setCurrentPrice(currentPrice);
+                alarm.setChangePercent(variance);
+                alarmRepository.save(alarm);
+                if (alarm.getChangePercent() > alarm.getUpperTarget() || alarm.getChangePercent() < alarm.getLowerTarget()) {
+                    sendMail(alarm);
+                }
+            }
+
         }
     }
+
+    private void sendMail(Alarm alarm) {
+        String to = alarm.getUser().getEmail();
+        String subject = "Stock Alarm Triggered for " + alarm.getStock();
+        String body = "The stock alarm you set for " + alarm.getStock() +" has been triggered.\n\n" +
+                "Alarm Details:\n" +
+                "- Stock Symbol: "+ alarm.getStock() +"\n" +
+                "- Original Price: " + alarm.getPriceWhenAlarmWasDefined() +"\n" +
+                "- New Price: " + alarm.getCurrentPrice() +"\n\n" +
+                "The stock price has met the conditions you specified, and the alarm is now marked as inactive.\n\n" +
+                "Thank you for using our stock alarm service.";
+        mailSenderService.sendNewMail(to, subject, body);
+        alarm.setStatus(false);
+        alarmRepository.save(alarm);
     }
+}

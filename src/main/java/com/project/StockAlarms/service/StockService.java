@@ -61,6 +61,14 @@ public class StockService {
     public Double findPrice(final StockWrapper stock) throws IOException {
          return stock.getStock().getPrice();
     }
+    
+    public void printStockToRefresh() {
+        List<StockWrapper> stocks = refreshService.getStocksToRefresh();
+        System.out.println("STOCKS TO REFRESH");
+        for (StockWrapper stock: stocks) {
+            System.out.println(stock.getStock().getSymbol());
+        }
+    }
 /*
 
 

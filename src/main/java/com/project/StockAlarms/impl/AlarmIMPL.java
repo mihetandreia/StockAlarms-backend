@@ -35,9 +35,10 @@ public class AlarmIMPL implements AlarmService {
     public void initializeStocksToRefresh() {
         List<String> stockSymbols = findAllStockFromActiveAlarms();
         System.out.println("symbols "+stockSymbols);
-
-        // cand se face findStocks se apeleaza findStock care adauga toate stockSymbols in stocksToRefresh
+        stockService.printStockToRefresh();
+        // cand se face findStocks se apeleaza findStock care adauga stockSymbols in stocksToRefresh
         List<StockWrapper> result = stockService.findSocks(stockSymbols);
+        stockService.printStockToRefresh();
 
     }
 

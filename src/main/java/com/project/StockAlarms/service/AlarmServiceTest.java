@@ -24,7 +24,7 @@ public class AlarmServiceTest {
     @Test
     void invoke() throws IOException {
 
-        // refreshService.updateCurrentPriceAndVariance("MSFT", 150.0, 5.0);
+         refreshService.updateCurrentPriceAndVariance("IBM", 50.0, -6.0);
 
  /*       List<String> stockSymbols = alarmService.findAllStockFromActiveAlarms();
         System.out.println("SYMBOLS "+stockSymbols);
@@ -37,6 +37,6 @@ public class AlarmServiceTest {
 */
        // alarmService.deleteFromStockToRefresh()
 
-        System.out.println(alarmService.findAllStockFromActiveAlarms());
+        //System.out.println(alarmService.findAllStockFromActiveAlarms());
     }
 }
