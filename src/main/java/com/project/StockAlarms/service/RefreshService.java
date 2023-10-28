@@ -151,6 +151,11 @@ public class RefreshService {
                 "The stock price has met the conditions you specified, and the alarm is now marked as inactive.\n\n" +
                 "Thank you for using our stock alarm service.";
         mailSenderService.sendNewMail(to, subject, body);
+        markAlarmAsInactive(alarm);
+
+    }
+
+    private void markAlarmAsInactive(Alarm alarm) {
         alarm.setStatus(false);
         alarmRepository.save(alarm);
     }
