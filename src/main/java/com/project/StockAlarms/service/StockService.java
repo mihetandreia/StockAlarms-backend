@@ -32,7 +32,7 @@ public class StockService {
                     .forSymbol(symbol)
                     .dataType(DataType.JSON)
                     .fetchSync();
-            System.out.println("response " + response.getSymbol() + response.getPrice());
+            System.out.println("Response from Alpha Vantage: symbol " + response.getSymbol() + ", price " + response.getPrice());
             StockWrapper stock = new StockWrapper(response);
 
             if (response.getSymbol() != null) {
@@ -40,11 +40,11 @@ public class StockService {
                 refreshService.addStockToRefresh(stock);
                 return stock;
             } else {
-                System.err.println("Răspunsul de la Alpha Vantage este null sau incomplet.");
+                System.err.println("Response from Alpha Vantage is null or incomplete.");
                 return null;
             }
         } catch (AlphaVantageException e) {
-            System.err.println("Eroare la efectuarea apelului către Alpha Vantage: " + e.getMessage());
+            System.err.println("Error making call to Alpha Vantage: " + e.getMessage());
             return null;
         }
 
@@ -58,27 +58,5 @@ public class StockService {
         return symbols.stream().map(this::findStock).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    public Double findPrice(final StockWrapper stock) throws IOException {
-         return stock.getStock().getPrice();
-    }
-    
-    public void printStockToRefresh() {
-        List<StockWrapper> stocks = refreshService.getStocksToRefresh();
-        System.out.println("STOCKS TO REFRESH");
-        for (StockWrapper stock: stocks) {
-            System.out.println(stock.getStock().getSymbol());
-        }
-    }
-/*
-
-
-    public BigDecimal findLastChangePercent(final StockWrapper stock) throws IOException {
-        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getChangeInPercent();
-    }
-
-    public BigDecimal findChangeFrom200MeanPercent(final StockWrapper stock) throws IOException {
-        return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getChangeFromAvg200InPercent();
-    }
-*/
 }
 

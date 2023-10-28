@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -39,9 +40,9 @@ public class RefreshService {
     public void addStockToRefresh(StockWrapper stock) {
         if (!existsInStockToRefresh(stock)) {
             stocksToRefresh.put(stock, false);
-            System.out.println("Stock-ul " + stock.getStock().getSymbol() + " a fost adaugat în stocksToRefresh.");
+            System.out.println("Stock " + stock.getStock().getSymbol() + " was added in stocksToRefresh.");
         } else {
-            System.out.println("Stock-ul " + stock.getStock().getSymbol() + " există deja în stocksToRefresh.");
+            System.out.println("Stock " + stock.getStock().getSymbol() + " already exists in stocksToRefresh.");
         }
     }
 
@@ -51,6 +52,7 @@ public class RefreshService {
             StockWrapper existingStock = iterator.next();
             if (existingStock.getStock().getSymbol().equals(symbol)) {
                 iterator.remove();
+                System.out.println("Stock " + symbol + " was deleted from stocksToRefresh.");
             }
         }
     }
@@ -66,9 +68,7 @@ public class RefreshService {
 
     public boolean existsInStockToRefresh(StockWrapper stock) {
         String symbol = stock.getStock().getSymbol();
-        System.out.println("SYMBOL1" + symbol);
         for (StockWrapper existingStock : stocksToRefresh.keySet()) {
-            System.out.println("SYMBOL2" + existingStock.getStock().getSymbol());
             if (existingStock.getStock().getSymbol().equals(symbol)) {
                 return true;
             }
@@ -82,11 +82,10 @@ public class RefreshService {
         Map<StockWrapper, Boolean> newStocksToRefresh = new HashMap<>();
         for (Map.Entry<StockWrapper, Boolean> entry : stocksToRefresh.entrySet()) {
             StockWrapper stock = entry.getKey();
-            System.out.println("STOCK " + stock.getStock().getSymbol());
             Boolean value = entry.getValue();
-            System.out.println("2.RefreshService last accessed:" + stock.getStock().getSymbol() + stock.getLastAccessed());
+            System.out.println("Stock symbol: " + stock.getStock().getSymbol() +", last accessed:" + stock.getLastAccessed());
+            System.out.println(stock.getLastAccessed() + " " + LocalDateTime.now() + " "+ LocalDateTime.now().minus(pollingInterval));
             if (stock.getLastAccessed().isBefore(LocalDateTime.now().minus(pollingInterval))) {
-                System.out.println("2.1.RefreshService: Setting should refresh " + stock.getStock().getSymbol() + stock.getLastAccessed());
                 refreshStockData(stock);
                 newStocksToRefresh.put(stock.withLastAccessed(LocalDateTime.now()), true);
             } else {
@@ -107,23 +106,38 @@ public class RefreshService {
                 .fetchSync();
         System.out.println(stock.getStock().getSymbol() + " " +LocalDateTime.now() + "---------------REFRESH--------------------------------");
         stock.setStock(response);
-        updateCurrentPriceAndVariance(response.getSymbol(), response.getPrice(), response.getChangePercent());
+        updateAlarmsForSymbol(response.getSymbol(), response.getPrice(), response.getChangePercent());
     }
 
-    public void updateCurrentPriceAndVariance(String symbol, Double currentPrice, Double variance) {
-        List<Alarm> alarms = alarmRepository.findAllByStock(symbol);
+    public void updateAlarmsForSymbol(String symbol, Double currentPrice, Double variance) {
+        List<Alarm> alarms = alarmRepository.findAllByStock(symbol)
+                .stream()
+                .filter(alarm -> alarm.getStatus())
+                .collect(Collectors.toList());
         System.out.println(alarms);
+        int noOfTriggeredAlarms = 0;
         for (Alarm alarm : alarms) {
-            if (alarm.getStatus()) {
-                alarm.setCurrentPrice(currentPrice);
-                alarm.setChangePercent(variance);
-                alarmRepository.save(alarm);
-                if (alarm.getChangePercent() > alarm.getUpperTarget() || alarm.getChangePercent() < alarm.getLowerTarget()) {
-                    sendMail(alarm);
-                }
-            }
-
+            updateCurrentPriceAndVariance(alarm, currentPrice, variance);
+            boolean triggeredAlarm = checkAlarmTargets(alarm);
+            noOfTriggeredAlarms += triggeredAlarm ? 1 : 0;
         }
+        if (alarms.size() == noOfTriggeredAlarms) {
+            deleteFromStockToRefresh(symbol);
+        }
+    }
+
+    public void updateCurrentPriceAndVariance(Alarm alarm, Double currentPrice, Double variance) {
+        alarm.setCurrentPrice(currentPrice);
+        alarm.setChangePercent(variance);
+        alarmRepository.save(alarm);
+    }
+
+    private boolean checkAlarmTargets(Alarm alarm) {
+        if (alarm.getChangePercent() > alarm.getUpperTarget() || alarm.getChangePercent() < alarm.getLowerTarget()) {
+            sendMail(alarm);
+            return true;
+        }
+        return false;
     }
 
     private void sendMail(Alarm alarm) {

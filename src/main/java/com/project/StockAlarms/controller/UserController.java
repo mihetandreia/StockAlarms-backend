@@ -19,7 +19,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "http://localhost:3000")
-public class UserContoller {
+public class UserController {
 
     @Autowired
     private UserService userService;
@@ -41,7 +41,7 @@ public class UserContoller {
         if (loginMessage.getMessage() == "Login Successfully") {
             Long idUser = userService.getIdUserByEmail(loginDTO.getEmail());
             this.userSessionId = authenticationService.authenticateUser(loginDTO.getEmail(), idUser);
-            System.out.println("Login " + this.userSessionId);
+            System.out.println("Login session " + this.userSessionId);
         }
         return ResponseEntity.ok(loginMessage);
     }
@@ -50,19 +50,19 @@ public class UserContoller {
     public Optional<User> whoAmI() {
         UserSession userSession = authenticationService.getUserSessionBySessionId(this.userSessionId);
         Optional<User> user = userService.findById(userSession.getUserId());
-        System.out.println("whoAmI " + this.userSessionId + " " + userSession.getEmail() + " " + user);
+        System.out.println("Logged in user " + this.userSessionId + " " + userSession.getEmail());
 
         return user;
     }
 
     @GetMapping("/getAll")
-    List<User> getAllUsers(){
+    public List<User> getAllUsers(){
         System.out.println(userService.findAll());
         return userService.findAll();
     }
 
     @GetMapping("/getById/{id}")
-    Optional<User> getUserById(@PathVariable Long id){
+    public Optional<User> getUserById(@PathVariable Long id){
         if(!userService.existsById(id)){
             throw new UserNotFoundException(id);
         }
@@ -70,7 +70,7 @@ public class UserContoller {
     }
 
     @DeleteMapping("/deleteById/{id}")
-    String deleteUser(@PathVariable Long id){
+    public String deleteUser(@PathVariable Long id){
         if(!userService.existsById(id)){
             throw new UserNotFoundException(id);
         }
@@ -79,7 +79,7 @@ public class UserContoller {
     }
 
     @GetMapping("/logout")
-    String logout() {
+    public String logout() {
         authenticationService.removeSession(this.userSessionId);
         this.userSessionId = null;
 

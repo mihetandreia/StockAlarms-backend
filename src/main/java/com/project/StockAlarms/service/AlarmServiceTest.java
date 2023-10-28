@@ -1,13 +1,11 @@
 package com.project.StockAlarms.service;
 
-import com.project.StockAlarms.model.StockWrapper;
 import com.project.StockAlarms.repository.AlarmRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
-import java.util.List;
 
 @SpringBootTest
 public class AlarmServiceTest {
@@ -24,7 +22,7 @@ public class AlarmServiceTest {
     @Test
     void invoke() throws IOException {
 
-         refreshService.updateCurrentPriceAndVariance("IBM", 50.0, -6.0);
+         refreshService.updateAlarmsForSymbol("IBM", 50.0, -6.0);
 
  /*       List<String> stockSymbols = alarmService.findAllStockFromActiveAlarms();
         System.out.println("SYMBOLS "+stockSymbols);

@@ -32,17 +32,17 @@ public class AlarmController {
     }
 
     @GetMapping("/getAll")
-    List<Alarm> getAllAlarms() {
+    public List<Alarm> getAllAlarms() {
         return alarmService.findAll();
     }
 
     @GetMapping("/getAllByUserId/{userId}")
-    List<Alarm> getAllAlarmsByUserId(@PathVariable Long userId) {
+    public List<Alarm> getAllAlarmsByUserId(@PathVariable Long userId) {
         return alarmService.findAllByUserId(userId);
     }
 
     @DeleteMapping("/deleteById/{id}")
-    String deleteAlarm(@PathVariable long id) {
+    public String deleteAlarm(@PathVariable long id) {
         alarmService.deleteById(id);
         return "Alarm with " + id + " has been deleted successfully.";
     }

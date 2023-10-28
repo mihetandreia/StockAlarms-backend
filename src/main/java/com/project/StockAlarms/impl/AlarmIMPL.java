@@ -25,31 +25,24 @@ public class AlarmIMPL implements AlarmService {
     @Autowired
     private  StockService stockService;
 
-
     @PostConstruct
     public void initialize() {
         initializeStocksToRefresh();
     }
 
-
     public void initializeStocksToRefresh() {
         List<String> stockSymbols = findAllStockFromActiveAlarms();
-        System.out.println("symbols "+stockSymbols);
-        stockService.printStockToRefresh();
-        // cand se face findStocks se apeleaza findStock care adauga stockSymbols in stocksToRefresh
+        System.out.println("Symbols from existing active alarms: " + stockSymbols);
         List<StockWrapper> result = stockService.findSocks(stockSymbols);
-        stockService.printStockToRefresh();
-
     }
-
 
     @Override
     public String addAlarm(AlarmDTO alarmDTO) {
         if (existsAlarmForSymbol(alarmDTO.getStock(), alarmDTO.getUser().getId())) {
             throw new AlarmException("There is already an alarm for " + alarmDTO.getStock());
         }
-             final StockWrapper stock = stockService.findStock(alarmDTO.getStock());
-        System.out.println("symbol valabil " + stockService.findStock(alarmDTO.getStock()));
+            final StockWrapper stock = stockService.findStock(alarmDTO.getStock());
+
             if (stock.getStock().getSymbol() == null) {
                 throw new AlarmException("Stock with symbol " + alarmDTO.getStock() + " cannot be found");
             }
@@ -72,8 +65,6 @@ public class AlarmIMPL implements AlarmService {
             String result = "Added " + newAlarm.getStock() + " for user " + newAlarm.getUser().getEmail();
             return result;
         }
-
-
 
     public boolean existsAlarmForSymbol(String symbol, Long userId) {
         List<Alarm> alarms = findAllByUserId(userId);
@@ -138,13 +129,9 @@ public class AlarmIMPL implements AlarmService {
 
     public List<String> findAllStockFromActiveAlarms() {
         List<Alarm> alarms = findAll();
-        //System.out.println(alarms);
         return alarms.stream()
                 .filter(Alarm::getStatus)
                 .map(Alarm::getStock)
                 .collect(Collectors.toList());
     }
-
-
-
 }
