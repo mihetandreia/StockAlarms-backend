@@ -15,7 +15,7 @@ public class StockAlarmsApplication {
 
 
        	Config cfg = Config.builder()
-                .key("WJI6O19AH0RVBBGU")   //  ESC2KL5U5A1X3IT6   WJI6O19AH0RVBBGU    L1XVG31QRLDEB522  7GFJ7UPJBNS4LOSM
+                .key("L1XVG31QRLDEB522")   //  ESC2KL5U5A1X3IT6   WJI6O19AH0RVBBGU    L1XVG31QRLDEB522  7GFJ7UPJBNS4LOSM
                 .timeOut(10)
                 .build();
 
@@ -23,12 +23,6 @@ public class StockAlarmsApplication {
 
 		SpringApplication.run(StockAlarmsApplication.class, args);
 
-
-
-
-		// Welcome to Alpha Vantage!
-		// Your API key is: WJI6O19AH0RVBBGU.
-		// Please record this API key at a safe place for future data access.
 	}
 
 

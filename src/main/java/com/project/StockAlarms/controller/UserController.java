@@ -6,6 +6,7 @@ import com.project.StockAlarms.exception.UserNotFoundException;
 import com.project.StockAlarms.model.User;
 import com.project.StockAlarms.model.UserSession;
 import com.project.StockAlarms.response.LoginMessage;
+import com.project.StockAlarms.response.RegisterMessage;
 import com.project.StockAlarms.service.AuthenticationService;
 import com.project.StockAlarms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +31,15 @@ public class UserController {
     private AuthenticationService authenticationService;
 
     @PostMapping("/add")
-    public String addUser(@RequestBody UserDTO userDTO) {
-        String email = userService.addUser(userDTO);
-        return email;
+    public RegisterMessage addUser(@RequestBody UserDTO userDTO) {
+        RegisterMessage registerMessage = userService.addUser(userDTO);
+        return registerMessage;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO) {
         LoginMessage loginMessage = userService.loginUser(loginDTO);
-        if (loginMessage.getMessage() == "Login Successfully") {
+        if (loginMessage.getMessage().equals("Login Successfully")) {
             Long idUser = userService.getIdUserByEmail(loginDTO.getEmail());
             this.userSessionId = authenticationService.authenticateUser(loginDTO.getEmail(), idUser);
             System.out.println("Login session " + this.userSessionId);

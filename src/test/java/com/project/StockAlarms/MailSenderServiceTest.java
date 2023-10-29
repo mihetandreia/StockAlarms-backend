@@ -1,6 +1,5 @@
 package com.project.StockAlarms;
 
-import com.project.StockAlarms.config.MailConfiguration;
 import com.project.StockAlarms.service.MailSenderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-@Import(com.project.StockAlarms.config.MailConfiguration.class) // Importați configurația pentru email
+@Import(com.project.StockAlarms.config.MailConfiguration.class)
 public class MailSenderServiceTest {
 
     @Autowired

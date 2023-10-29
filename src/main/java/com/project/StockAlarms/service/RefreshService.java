@@ -1,8 +1,6 @@
 package com.project.StockAlarms.service;
 
 
-import com.crazzyghost.alphavantage.AlphaVantage;
-import com.crazzyghost.alphavantage.parameters.DataType;
 import com.crazzyghost.alphavantage.timeseries.response.QuoteResponse;
 import com.project.StockAlarms.model.Alarm;
 import com.project.StockAlarms.model.StockWrapper;

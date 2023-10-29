@@ -5,6 +5,7 @@ import com.project.StockAlarms.dto.UserDTO;
 import com.project.StockAlarms.model.User;
 import com.project.StockAlarms.repository.UserRepository;
 import com.project.StockAlarms.response.LoginMessage;
+import com.project.StockAlarms.response.RegisterMessage;
 import com.project.StockAlarms.service.AuthenticationService;
 import com.project.StockAlarms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +22,20 @@ public class UserIMPL implements UserService {
 
 
     @Override
-    public String addUser(UserDTO userDTO) {
-        User newUser = new User(
-               // userDTO.getId(),
-                userDTO.getFirstName(),
-                userDTO.getLastName(),
-                userDTO.getEmail(),
-                userDTO.getPassword()
-        );
-        userRepository.save(newUser);
+    public RegisterMessage addUser(UserDTO userDTO) {
+        if (userDTO.getPassword().equals(userDTO.getCheckPassword())) {
+            User newUser = new User(
+                    userDTO.getFirstName(),
+                    userDTO.getLastName(),
+                    userDTO.getEmail(),
+                    userDTO.getPassword()
+            );
+            userRepository.save(newUser);
 
-        return newUser.getEmail();
+            return new RegisterMessage("Registation Successfully", true);
+        } else {
+            return new RegisterMessage("Passwords do not match", false);
+        }
     }
 
     @Override

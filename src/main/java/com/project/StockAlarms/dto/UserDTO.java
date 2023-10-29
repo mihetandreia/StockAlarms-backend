@@ -13,16 +13,18 @@ public class UserDTO {
 
     private String password;
 
+    private String checkPassword;
+
     public UserDTO(){
 
     }
 
-    public UserDTO( String firstName, String lastName, String email, String password) {
-        //this.id = id;
+    public UserDTO( String firstName, String lastName, String email, String password, String checkPassword) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.checkPassword = checkPassword;
     }
 
     public Long getId() {
@@ -59,6 +61,14 @@ public class UserDTO {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getCheckPassword() {
+        return checkPassword;
+    }
+
+    public void setCheckPassword(String checkPassword) {
+        this.checkPassword = checkPassword;
     }
 
     public void setPassword(String password) {

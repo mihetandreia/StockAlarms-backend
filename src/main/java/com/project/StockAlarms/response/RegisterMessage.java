@@ -1,6 +1,6 @@
 package com.project.StockAlarms.response;
 
-public class LoginMessage implements Message{
+public class RegisterMessage implements Message{
     String message;
     Boolean status;
 
@@ -20,7 +20,7 @@ public class LoginMessage implements Message{
         this.status = status;
     }
 
-    public LoginMessage(String message, Boolean status) {
+    public RegisterMessage(String message, Boolean status) {
         this.message = message;
         this.status = status;
     }

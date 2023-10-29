@@ -47,7 +47,10 @@ public class StockService {
         } catch (AlphaVantageException e) {
             System.err.println("Error making call to Alpha Vantage: " + e.getMessage());
             return null;
-        }
+        } catch (Exception e) {
+            System.err.println("Unknown error: " + e.getMessage());
+            return null;
+    }
 
     }
 

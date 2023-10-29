@@ -4,12 +4,13 @@ import com.project.StockAlarms.dto.LoginDTO;
 import com.project.StockAlarms.dto.UserDTO;
 import com.project.StockAlarms.model.User;
 import com.project.StockAlarms.response.LoginMessage;
+import com.project.StockAlarms.response.RegisterMessage;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    String addUser(UserDTO userDTO);
+    RegisterMessage addUser(UserDTO userDTO);
 
     LoginMessage loginUser(LoginDTO loginDTO);
 
