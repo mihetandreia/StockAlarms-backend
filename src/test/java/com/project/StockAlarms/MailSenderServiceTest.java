@@ -1,4 +1,4 @@
-package com.project.StockAlarms.service;
+package com.project.StockAlarms;
 
 import com.project.StockAlarms.config.MailConfiguration;
 import com.project.StockAlarms.service.MailSenderService;

@@ -15,7 +15,7 @@ public class StockAlarmsApplication {
 
 
        	Config cfg = Config.builder()
-                .key("WJI6O19AH0RVBBGU") //  ESC2KL5U5A1X3IT6
+                .key("7GFJ7UPJBNS4LOSM")   //  ESC2KL5U5A1X3IT6   WJI6O19AH0RVBBGU    L1XVG31QRLDEB522  7GFJ7UPJBNS4LOSM
                 .timeOut(10)
                 .build();
 

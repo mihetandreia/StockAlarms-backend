@@ -1,6 +1,9 @@
-package com.project.StockAlarms.service;
+package com.project.StockAlarms;
 
 import com.project.StockAlarms.repository.AlarmRepository;
+import com.project.StockAlarms.service.AlarmService;
+import com.project.StockAlarms.service.RefreshService;
+import com.project.StockAlarms.service.StockService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,14 +18,16 @@ public class AlarmServiceTest {
     @Autowired
     private StockService stockService;
 
-    @Autowired AlarmService alarmService;
+    @Autowired
+    AlarmService alarmService;
 
     @Autowired AlarmRepository alarmRepository;
 
     @Test
     void invoke() throws IOException {
 
-         refreshService.updateAlarmsForSymbol("IBM", 50.0, -6.0);
+         //refreshService.updateAlarmsForSymbol("IBM", 50.0, -6.0);
+        refreshService.deleteFromStockToRefresh("IBM");
 
  /*       List<String> stockSymbols = alarmService.findAllStockFromActiveAlarms();
         System.out.println("SYMBOLS "+stockSymbols);

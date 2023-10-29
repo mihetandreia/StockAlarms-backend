@@ -27,6 +27,9 @@ public class RefreshService {
     private AlarmRepository alarmRepository;
 
     @Autowired
+    private AlphaVantageService alphaVantageService;
+
+    @Autowired
     private MailSenderService mailSenderService;
 
     @Value("${polling.interval}")
@@ -47,10 +50,11 @@ public class RefreshService {
     }
 
     public void deleteFromStockToRefresh(String symbol) {
-        Iterator<StockWrapper> iterator = stocksToRefresh.keySet().iterator();
+        Iterator<Map.Entry<StockWrapper, Boolean>> iterator = stocksToRefresh.entrySet().iterator();
         while (iterator.hasNext()) {
-            StockWrapper existingStock = iterator.next();
-            if (existingStock.getStock().getSymbol().equals(symbol)) {
+            Map.Entry<StockWrapper, Boolean> entry = iterator.next();
+            StockWrapper stock = entry.getKey();
+            if (stock.getStock().getSymbol().equals(symbol)) {
                 iterator.remove();
                 System.out.println("Stock " + symbol + " was deleted from stocksToRefresh.");
             }
@@ -86,8 +90,9 @@ public class RefreshService {
             System.out.println("Stock symbol: " + stock.getStock().getSymbol() +", last accessed:" + stock.getLastAccessed());
             System.out.println(stock.getLastAccessed() + " " + LocalDateTime.now() + " "+ LocalDateTime.now().minus(pollingInterval));
             if (stock.getLastAccessed().isBefore(LocalDateTime.now().minus(pollingInterval))) {
-                refreshStockData(stock);
-                newStocksToRefresh.put(stock.withLastAccessed(LocalDateTime.now()), true);
+                if(refreshStockData(stock)) {
+                    newStocksToRefresh.put(stock.withLastAccessed(LocalDateTime.now()), true);
+                }
             } else {
                 newStocksToRefresh.put(stock, value);
             }
@@ -97,19 +102,14 @@ public class RefreshService {
     };
 
 
-    private void refreshStockData(StockWrapper stock) {
-        QuoteResponse response = AlphaVantage.api()
-                .timeSeries()
-                .quote()
-                .forSymbol(stock.getStock().getSymbol())
-                .dataType(DataType.JSON)
-                .fetchSync();
+    private boolean refreshStockData(StockWrapper stock) {
+        QuoteResponse response = alphaVantageService.getQuoteResponse(stock.getStock().getSymbol());
         System.out.println(stock.getStock().getSymbol() + " " +LocalDateTime.now() + "---------------REFRESH--------------------------------");
         stock.setStock(response);
-        updateAlarmsForSymbol(response.getSymbol(), response.getPrice(), response.getChangePercent());
+        return updateAlarmsForSymbol(response.getSymbol(), response.getPrice(), response.getChangePercent());
     }
 
-    public void updateAlarmsForSymbol(String symbol, Double currentPrice, Double variance) {
+    public boolean updateAlarmsForSymbol(String symbol, Double currentPrice, Double variance) {
         List<Alarm> alarms = alarmRepository.findAllByStock(symbol)
                 .stream()
                 .filter(alarm -> alarm.getStatus())
@@ -121,9 +121,15 @@ public class RefreshService {
             boolean triggeredAlarm = checkAlarmTargets(alarm);
             noOfTriggeredAlarms += triggeredAlarm ? 1 : 0;
         }
-        if (alarms.size() == noOfTriggeredAlarms) {
+        return keepInStocksToRefresh(alarms.size(), noOfTriggeredAlarms, symbol);
+    }
+
+    public boolean keepInStocksToRefresh(int alarmsSize, int noOfTriggeredAlarms, String symbol) {
+        if (alarmsSize == noOfTriggeredAlarms) {
             deleteFromStockToRefresh(symbol);
+            return false;
         }
+        return true;
     }
 
     public void updateCurrentPriceAndVariance(Alarm alarm, Double currentPrice, Double variance) {

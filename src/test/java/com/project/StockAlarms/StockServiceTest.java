@@ -1,4 +1,4 @@
-package com.project.StockAlarms.service;
+package com.project.StockAlarms;
 
 import com.crazzyghost.alphavantage.AlphaVantage;
 import com.crazzyghost.alphavantage.Config;
@@ -6,6 +6,7 @@ import com.crazzyghost.alphavantage.parameters.DataType;
 import com.crazzyghost.alphavantage.timeseries.response.QuoteResponse;
 import com.crazzyghost.alphavantage.timeseries.response.TimeSeriesResponse;
 import com.project.StockAlarms.model.StockWrapper;
+import com.project.StockAlarms.service.StockService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

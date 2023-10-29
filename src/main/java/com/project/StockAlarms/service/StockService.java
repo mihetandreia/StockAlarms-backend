@@ -22,24 +22,25 @@ public class StockService {
     @Autowired
     private RefreshService refreshService;
 
+    @Autowired
+    private AlphaVantageService alphaVantageService;
+
 
     public StockWrapper findStock(final String symbol){
 
         try {
-            QuoteResponse response = AlphaVantage.api()
-                    .timeSeries()
-                    .quote()
-                    .forSymbol(symbol)
-                    .dataType(DataType.JSON)
-                    .fetchSync();
+            QuoteResponse response = alphaVantageService.getQuoteResponse(symbol);
+
             System.out.println("Response from Alpha Vantage: symbol " + response.getSymbol() + ", price " + response.getPrice());
-            StockWrapper stock = new StockWrapper(response);
 
-            if (response.getSymbol() != null) {
-
+            if (response.getSymbol() != null && !response.getSymbol().isEmpty()) {
+                StockWrapper stock = new StockWrapper(response);
                 refreshService.addStockToRefresh(stock);
                 return stock;
-            } else {
+            }else if(response.getErrorMessage() != null && !response.getErrorMessage().isEmpty()){
+                System.err.println(response.getErrorMessage());
+                return null;
+            }else {
                 System.err.println("Response from Alpha Vantage is null or incomplete.");
                 return null;
             }

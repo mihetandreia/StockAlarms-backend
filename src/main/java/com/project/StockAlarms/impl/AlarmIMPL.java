@@ -43,7 +43,7 @@ public class AlarmIMPL implements AlarmService {
         }
             final StockWrapper stock = stockService.findStock(alarmDTO.getStock());
 
-            if (stock.getStock().getSymbol() == null) {
+            if (stock == null) {
                 throw new AlarmException("Stock with symbol " + alarmDTO.getStock() + " cannot be found");
             }
 
