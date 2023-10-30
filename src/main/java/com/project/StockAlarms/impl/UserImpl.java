@@ -6,7 +6,6 @@ import com.project.StockAlarms.model.User;
 import com.project.StockAlarms.repository.UserRepository;
 import com.project.StockAlarms.response.LoginMessage;
 import com.project.StockAlarms.response.RegisterMessage;
-import com.project.StockAlarms.service.AuthenticationService;
 import com.project.StockAlarms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserIMPL implements UserService {
+public class UserImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -58,17 +57,22 @@ public class UserIMPL implements UserService {
         return userRepository.findByEmail(email).getId();
     }
 
+    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
+    @Override
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
+    @Override
     public boolean existsById(Long id) {
         return userRepository.existsById(id);
     }
+
+    @Override
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }

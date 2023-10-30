@@ -1,6 +1,5 @@
 package com.project.StockAlarms.dto;
 
-import jakarta.persistence.Column;
 
 public class UserDTO {
     private Long id;

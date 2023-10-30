@@ -8,6 +8,7 @@ public class LoginMessage implements Message{
         return message;
     }
 
+    @Override
     public void setMessage(String message) {
         this.message = message;
     }
@@ -16,6 +17,7 @@ public class LoginMessage implements Message{
         return status;
     }
 
+    @Override
     public void setStatus(Boolean status) {
         this.status = status;
     }

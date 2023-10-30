@@ -1,11 +1,7 @@
 package com.project.StockAlarms.dto;
 
 import com.project.StockAlarms.model.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
-import java.math.BigDecimal;
 
 public class AlarmDTO {
     private Long id;

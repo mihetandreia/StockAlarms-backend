@@ -12,7 +12,6 @@ public class AuthenticationService {
     @Autowired
     private  UserSessionService userSessionService;
 
-
     public String authenticateUser(String email, Long userId) {
         UserSession userSession = new UserSession();
         userSession.setEmail(email);

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class AlarmIMPL implements AlarmService {
+public class AlarmImpl implements AlarmService {
 
     @Autowired
     private  AlarmRepository alarmRepository;
@@ -76,19 +76,23 @@ public class AlarmIMPL implements AlarmService {
         return false;
     }
 
+    @Override
     public List<Alarm> findAll() {
         return alarmRepository.findAll();
     }
 
+    @Override
     public Optional<Alarm> findById(Long id) {
         return alarmRepository.findById(id);
     }
 
+    @Override
     public void deleteById(Long id) {
         deleteFromStockToRefresh(id);
         alarmRepository.deleteById(id);
     }
 
+    @Override
     public void deleteFromStockToRefresh(Long id) {
         Optional<Alarm> alarm = findById(id);
         List<Alarm> alarms = findAllActiveAlarmByStock(alarm.get().getStock());
@@ -122,11 +126,13 @@ public class AlarmIMPL implements AlarmService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public List<Alarm> findAllByUserId(Long userId){
         return alarmRepository.findAllByUserId(userId);
 
     }
 
+    @Override
     public List<String> findAllStockFromActiveAlarms() {
         List<Alarm> alarms = findAll();
         return alarms.stream()

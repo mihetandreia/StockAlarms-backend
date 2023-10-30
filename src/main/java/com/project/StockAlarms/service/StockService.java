@@ -1,15 +1,12 @@
 package com.project.StockAlarms.service;
 
-import com.crazzyghost.alphavantage.AlphaVantage;
 import com.crazzyghost.alphavantage.AlphaVantageException;
-import com.crazzyghost.alphavantage.parameters.DataType;
 import com.crazzyghost.alphavantage.timeseries.response.QuoteResponse;
 import com.project.StockAlarms.model.StockWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -50,8 +47,7 @@ public class StockService {
         } catch (Exception e) {
             System.err.println("Unknown error: " + e.getMessage());
             return null;
-    }
-
+        }
     }
 
     public void deleteFromStockToRefresh(String symbol) {

@@ -2,7 +2,6 @@ package com.project.StockAlarms.model;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 
 @Entity
 public class Alarm {

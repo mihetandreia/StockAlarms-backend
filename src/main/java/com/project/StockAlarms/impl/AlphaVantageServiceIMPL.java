@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AlphaVantageServiceIMPL implements AlphaVantageService {
+
+    @Override
     public QuoteResponse getQuoteResponse(String symbol) {
         QuoteResponse response = AlphaVantage.api()
                 .timeSeries()
